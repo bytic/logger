@@ -23,6 +23,8 @@
   },
   "require": {
     "php": "^7.0",
+    "bytic/debug": "^1.0",
+    "bytic/container": "^1.0",
     "monolog/monolog": "^1.20"
   },
   "require-dev": {
