@@ -19,7 +19,7 @@ trait HasNewRelicStream
     public function generateNewRelicStream($streams, $appName = null)
     {
         if (extension_loaded('newrelic')) {
-            $streams[] = new NewRelicHandler(Logger::ERROR, true, $appName);
+            $streams[] = new NewRelicHandler(Logger::WARNING, true, $appName);
         }
 
         return $streams;
