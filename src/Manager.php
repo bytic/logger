@@ -8,7 +8,10 @@ use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Psr\Log\LoggerTrait;
 
 /**
- * Class Manager.
+ * Class Manager
+ *
+ * @package Nip\Logger
+ *
  */
 class Manager implements PsrLoggerInterface
 {
