@@ -75,6 +75,6 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
      */
     public function provides()
     {
-        return ['log', PsrLoggerInterface::class];
+        return ['log', PsrLoggerInterface::class, Monolog::class];
     }
 }
