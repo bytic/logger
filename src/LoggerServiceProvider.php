@@ -3,9 +3,8 @@
 namespace Nip\Logger;
 
 use Monolog\Logger as Monolog;
-use Nip\Container\ServiceProvider\AbstractSignatureServiceProvider;
-use Nip\Container\ServiceProvider\BootableServiceProviderInterface;
-use Nip\Debug\ErrorHandler;
+use Nip\Container\ServiceProviders\Providers\AbstractSignatureServiceProvider;
+use Nip\Container\ServiceProviders\Providers\BootableServiceProviderInterface;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
@@ -17,13 +16,26 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
     /**
      * @inheritdoc
      */
+    public function provides()
+    {
+        return ['log', PsrLoggerInterface::class, Monolog::class];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function register()
+    {
+        $this->registerLog();
+        $this->getContainer()->share(Monolog::class, $this->createMonolog());
+    }
+
+    protected function registerLog()
     {
         $this->getContainer()->share('log', function () {
             return $this->createLogger();
         });
-
-        $this->getContainer()->share(Monolog::class, $this->createMonolog());
+        $this->getContainer()->alias('log', PsrLoggerInterface::class);
     }
 
     /**
@@ -31,7 +43,7 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
      *
      * @return Manager
      */
-    public function createLogger()
+    protected function createLogger()
     {
         $log = $this->getContainer()->get(Manager::class);
 
@@ -65,16 +77,5 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
 
     public function boot()
     {
-        $logger = $this->getContainer()->get('log');
-        $logger->init();
-        $this->getContainer()->get(ErrorHandler::class)->setDefaultLogger($logger);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function provides()
-    {
-        return ['log', PsrLoggerInterface::class, Monolog::class];
     }
 }
