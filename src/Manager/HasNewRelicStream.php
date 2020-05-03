@@ -1,6 +1,6 @@
 <?php
 
-namespace Nip\Logger\Traits;
+namespace Nip\Logger\Manager;
 
 use Monolog\Logger;
 use Nip\Logger\Monolog\Handler\NewRelicHandler;

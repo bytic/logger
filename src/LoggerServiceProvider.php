@@ -5,6 +5,7 @@ namespace Nip\Logger;
 use Monolog\Logger as Monolog;
 use Nip\Container\ServiceProviders\Providers\AbstractSignatureServiceProvider;
 use Nip\Container\ServiceProviders\Providers\BootableServiceProviderInterface;
+use Nip\Debug\ErrorHandler;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
@@ -18,7 +19,7 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
      */
     public function provides()
     {
-        return ['log', PsrLoggerInterface::class, Monolog::class];
+        return ['log', PsrLoggerInterface::class];
     }
 
     /**
@@ -27,7 +28,6 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
     public function register()
     {
         $this->registerLog();
-        $this->getContainer()->share(Monolog::class, $this->createMonolog());
     }
 
     protected function registerLog()
@@ -45,37 +45,14 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
      */
     protected function createLogger()
     {
-        $log = $this->getContainer()->get(Manager::class);
-
-//        if ($this->app->hasMonologConfigurator()) {
-//            call_user_func($this->app->getMonologConfigurator(), $log->getMonolog());
-//        } else {
-//            $this->configureHandler($log);
-//        }
-        return $log;
-    }
-
-    /**
-     * Create the Monolog.
-     *
-     * @return Monolog
-     */
-    protected function createMonolog()
-    {
-        return new Monolog($this->channel());
-    }
-
-    /**
-     * Get the name of the log "channel".
-     *
-     * @return string
-     */
-    protected function channel()
-    {
-        return 'production';
+        $manager =  $this->getContainer()->get(Manager::class);
+        $manager->setContainer($this->getContainer());
+        return $manager;
     }
 
     public function boot()
     {
+        $this->getContainer()->get(ErrorHandler::class)
+            ->setDefaultLogger($this->getContainer()->get(PsrLoggerInterface::class));
     }
 }
