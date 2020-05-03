@@ -2,8 +2,8 @@
 
 namespace Nip\Logger\Tests;
 
-use Monolog\Logger;
-use Nip\Logger\Manager;
+use Nip\Logger\Logger;
+use Monolog\Logger as Monolog;
 
 /**
  * Class ManagerTest
@@ -13,8 +13,12 @@ class ManagerTest extends AbstractTest
 {
     public function test_driver_init_default()
     {
-        $manager = new Manager();
+        $manager = $this->generateBaseManager();
+
         $driver = $manager->driver();
         self::assertInstanceOf(Logger::class, $driver);
+
+        $logger = $driver->getLogger();
+        self::assertInstanceOf(Monolog::class, $logger);
     }
 }

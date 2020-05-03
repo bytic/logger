@@ -16,6 +16,17 @@ trait HasChannels
     protected $channels = [];
 
     /**
+     * Get a log channel instance.
+     *
+     * @param string|null $channel
+     * @return \Psr\Log\LoggerInterface
+     */
+    public function channel($channel = null)
+    {
+        return $this->driver($channel);
+    }
+
+    /**
      * Extract the log channel from the given configuration.
      *
      * @param array $config

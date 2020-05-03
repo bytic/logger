@@ -40,4 +40,9 @@ trait HasApplication
     {
         return is_object($this->application);
     }
+
+    protected function getLogsFolderPath()
+    {
+        $this->getContainer()->get('path.storage').'/logs';
+    }
 }

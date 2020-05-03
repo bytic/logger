@@ -17,6 +17,6 @@ trait HasConfiguration
      */
     protected function configurationFor($name)
     {
-        return static::getPackageConfig('channels.{$name}', ['driver' => 'single']);
+        return static::getPackageConfig("channels.{$name}", ['driver' => 'single']);
     }
 }

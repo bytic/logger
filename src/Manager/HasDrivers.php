@@ -2,6 +2,7 @@
 
 namespace Nip\Logger\Manager;
 
+use Nip\Logger\Logger;
 use Throwable;
 
 /**
@@ -15,7 +16,7 @@ trait HasDrivers
      * Get a log driver instance.
      *
      * @param string|null $driver
-     * @return \Psr\Log\LoggerInterface
+     * @return Logger|\Psr\Log\LoggerInterface
      */
     public function driver($driver = null)
     {

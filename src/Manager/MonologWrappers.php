@@ -6,6 +6,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FormattableHandlerInterface;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger as Monolog;
+use Nip\Config\Config;
 use Psr\Log\InvalidArgumentException;
 
 /**
@@ -22,8 +23,10 @@ trait MonologWrappers
      *
      * @throws \InvalidArgumentException
      */
-    protected function createMonologDriver(array $config)
+    protected function createMonologDriver($config)
     {
+        $config = $config instanceof Config ? $config->toArray() : $config;
+
         if (!is_a($config['handler'], HandlerInterface::class, true)) {
             throw new InvalidArgumentException(
                 $config['handler'].' must be an instance of '.HandlerInterface::class
@@ -38,7 +41,8 @@ trait MonologWrappers
 
         return new Monolog($this->parseChannel($config), [
             $this->prepareHandler(
-                $this->app->make($config['handler'], $with), $config
+                $this->getContainer()->get($config['handler'], $with),
+                $config
             ),
         ]);
     }

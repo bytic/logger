@@ -4,6 +4,7 @@ namespace Nip\Logger\Manager;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
+use Nip\Config\Config;
 use Psr\Log\InvalidArgumentException;
 
 /**
@@ -72,22 +73,25 @@ trait CreateDrivers
     }
 
     /**
-     * Create an emergency log handler to avoid white screens of death.
+     * Create an aggregate log driver instance.
      *
+     * @param array $config
      * @return \Psr\Log\LoggerInterface
      */
-    protected function createEmergencyLogger()
+    protected function createStackDriver($config)
     {
-        $config = $this->configurationFor('emergency');
+        $config = $config instanceof Config ? $config->toArray() : $config;
 
-        $handler = new StreamHandler(
-            $config['path'] ?? $this->app->storagePath().'/logs/laravel.log',
-            $this->level(['level' => 'debug'])
-        );
+        $handlers = [];
+        array_map(function ($channel) use (&$handlers) {
+            $handlers = array_merge($handlers, $this->channel($channel)->getHandlers());
+        }, $config['channels']);
 
-        return $this->createLogger(
-            new Monolog('bytic', $this->prepareHandlers([$handler]))
-        );
+//        if ($config['ignore_exceptions'] ?? false) {
+//            $handlers = [new WhatFailureGroupHandler($handlers)];
+//        }
+
+        return new Monolog($this->parseChannel($config), $handlers);
     }
 
     /**
@@ -96,12 +100,13 @@ trait CreateDrivers
      * @param array $config
      * @return \Psr\Log\LoggerInterface
      */
-    protected function createSingleDriver(array $config)
+    protected function createSingleDriver($config)
     {
+        $config = $config instanceof Config ? $config->toArray() : $config;
         $handlers = [
             $this->prepareHandler(
                 new StreamHandler(
-                    $config['path'] ?? sys_get_temp_dir().'/bytic-framework.log',
+                    $config['path'] ?? $this->getLogsFolderPath().'/bytic.log',
                     $this->level($config),
                     $config['bubble'] ?? true,
                     $config['permission'] ?? null,
@@ -112,5 +117,24 @@ trait CreateDrivers
         ];
 
         return new Monolog($this->parseChannel($config), $handlers);
+    }
+
+    /**
+     * Create an emergency log handler to avoid white screens of death.
+     *
+     * @return \Psr\Log\LoggerInterface
+     */
+    protected function createEmergencyLogger()
+    {
+        $config = $this->configurationFor('emergency');
+
+        $handler = new StreamHandler(
+            $config['path'] ?? $this->getLogsFolderPath().'/bytic.log',
+            $this->level(['level' => 'debug'])
+        );
+
+        return $this->createLogger(
+            new Monolog('bytic', $this->prepareHandlers([$handler]))
+        );
     }
 }
