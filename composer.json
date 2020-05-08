@@ -30,6 +30,7 @@
     "monolog/monolog": "^1.2|^2.0"
   },
   "require-dev": {
+    "bytic/application": "^0.9|^1.0",
     "phpunit/phpunit": "^7.2|^8.0|^9.0",
     "mockery/mockery": "^1.1"
   }
