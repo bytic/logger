@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'newrelic'],
             'ignore_exceptions' => false,
         ],
 
@@ -70,6 +70,11 @@ return [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
             ],
+        ],
+
+        'newrelic' => [
+            'driver' => 'monolog',
+            'handler' => \Nip\Logger\Monolog\Handler\NewRelicHandler::class,
         ],
 
         'stderr' => [

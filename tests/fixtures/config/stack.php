@@ -19,6 +19,11 @@ return [
             ],
         ],
 
+        'newrelic' => [
+            'driver' => 'monolog',
+            'handler' => \Nip\Logger\Monolog\Handler\NewRelicHandler::class
+        ],
+
         'stdout' => [
             'driver' => 'monolog',
             'handler' => StreamHandler::class,

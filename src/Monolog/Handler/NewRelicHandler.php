@@ -11,7 +11,7 @@ class NewRelicHandler extends \Monolog\Handler\NewRelicHandler
     /** @noinspection PhpMissingParentCallCommonInspection
      * @inheritDoc
      */
-    protected function setNewRelicAppName($appName)
+    protected function setNewRelicAppName($appName): void
     {
     }
 }

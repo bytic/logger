@@ -5,6 +5,7 @@ namespace Nip\Logger\Tests\Manager;
 use Monolog\Handler\StreamHandler;
 use Nip\Logger\Logger;
 use Nip\Logger\Manager;
+use Nip\Logger\Monolog\Handler\NewRelicHandler;
 use Nip\Logger\Tests\AbstractTest;
 
 /**
@@ -28,5 +29,21 @@ class CreateDriversTest extends AbstractTest
         $this->assertCount(2, $handlers);
         $this->assertInstanceOf(StreamHandler::class, $handlers[0]);
         $this->assertInstanceOf(StreamHandler::class, $handlers[1]);
+    }
+
+    public function test_createNewRelicDriver()
+    {
+        $manager = $this->generateBaseManager();
+
+        $config = require TEST_FIXTURE_PATH.'/config/stack.php';
+        $manager::setConfig(['logging' => $config]);
+
+        $logger = $manager->driver('newrelic');
+        self::assertInstanceOf(Logger::class, $logger);
+
+        $handlers = $logger->getLogger()->getHandlers();
+
+        $this->assertCount(1, $handlers);
+        $this->assertInstanceOf(NewRelicHandler::class, $handlers[0]);
     }
 }

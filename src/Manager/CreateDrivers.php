@@ -2,6 +2,7 @@
 
 namespace Nip\Logger\Manager;
 
+use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Nip\Config\Config;
