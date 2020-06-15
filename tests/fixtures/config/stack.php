@@ -19,6 +19,13 @@ return [
             ],
         ],
 
+        'daily' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/bytic.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
         'newrelic' => [
             'driver' => 'monolog',
             'handler' => \Nip\Logger\Monolog\Handler\NewRelicHandler::class

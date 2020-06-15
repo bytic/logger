@@ -2,7 +2,7 @@
 
 namespace Nip\Logger\Manager;
 
-use Monolog\Handler\HandlerInterface;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Nip\Config\Config;
@@ -117,6 +117,23 @@ trait CreateDrivers
             ),
         ];
 
+        return new Monolog($this->parseChannel($config), $handlers);
+    }
+
+    /**
+     * @param array $config
+     * @return Monolog
+     */
+    protected function createDailyDriver($config)
+    {
+        $config = $config instanceof Config ? $config->toArray() : $config;
+
+        $handlers = [
+            $this->prepareHandler(new RotatingFileHandler(
+                $config['path'], $config['days'] ?? 7, $this->level($config),
+                $config['bubble'] ?? true, $config['permission'] ?? null, $config['locking'] ?? false
+            ), $config),
+        ];
         return new Monolog($this->parseChannel($config), $handlers);
     }
 
