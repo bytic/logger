@@ -30,8 +30,7 @@ trait HasDrivers
      */
     public function getDefaultDriver()
     {
-        return 'single';
-//        return $this->app['config']['logging.default'];
+        return static::getPackageConfig("default", 'single');
     }
 
     /**
@@ -48,4 +47,10 @@ trait HasDrivers
             return $this->createEmergencyLogger();
         }
     }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    abstract protected function initDriver($name);
 }

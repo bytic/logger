@@ -2,6 +2,9 @@
 
 namespace Nip\Logger\Manager;
 
+use Nip\Logger\Logger;
+use Psr\Log\LoggerInterface;
+
 /**
  * Class WriteLogs
  * @package Nip\Logger\Traits
@@ -30,4 +33,10 @@ trait WriteLogs
     {
         return $this->driver()->{$level}($message, $context);
     }
+
+    /**
+     * @param string|null $driver
+     * @return Logger|LoggerInterface
+     */
+    abstract public function driver($driver = null);
 }

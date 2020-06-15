@@ -2,8 +2,8 @@
 
 namespace Nip\Logger\Manager;
 
-use Monolog\Logger as Monolog;
 use Nip\Logger\Logger;
+use Psr\Log\LoggerInterface;
 
 /**
  * Trait HasLoggers
@@ -13,7 +13,7 @@ trait HasLoggers
 {
     /**
      * @param $logger
-     * @return Logger
+     * @return Logger|LoggerInterface
      */
     protected function createLogger($logger)
     {

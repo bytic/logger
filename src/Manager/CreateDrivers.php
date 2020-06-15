@@ -2,11 +2,14 @@
 
 namespace Nip\Logger\Manager;
 
+use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Nip\Config\Config;
+use Nip\Logger\Logger;
 use Psr\Log\InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Trait CreateDrivers
@@ -37,7 +40,7 @@ trait CreateDrivers
      * Resolve the given log instance by name.
      *
      * @param string $name
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      *
      * @throws \InvalidArgumentException
      */
@@ -70,14 +73,14 @@ trait CreateDrivers
      */
     protected function callCustomCreator(array $config)
     {
-        return $this->customCreators[$config['driver']]($this->app, $config);
+        return $this->customCreators[$config['driver']](app(), $config);
     }
 
     /**
      * Create an aggregate log driver instance.
      *
      * @param array $config
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
     protected function createStackDriver($config)
     {
@@ -99,7 +102,7 @@ trait CreateDrivers
      * Create an instance of the single file log driver.
      *
      * @param array $config
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
     protected function createSingleDriver($config)
     {
@@ -134,13 +137,14 @@ trait CreateDrivers
                 $config['bubble'] ?? true, $config['permission'] ?? null, $config['locking'] ?? false
             ), $config),
         ];
+
         return new Monolog($this->parseChannel($config), $handlers);
     }
 
     /**
      * Create an emergency log handler to avoid white screens of death.
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
     protected function createEmergencyLogger()
     {
@@ -152,7 +156,26 @@ trait CreateDrivers
         );
 
         return $this->createLogger(
-            new Monolog('bytic', $this->prepareHandlers([$handler]))
+            new Monolog('bytic', [$this->prepareHandler($handler)])
         );
     }
+
+    /**
+     * @param $logger
+     * @return Logger|LoggerInterface
+     */
+    abstract protected function createLogger($logger);
+
+    /**
+     * @param string $logger
+     * @return array
+     */
+    abstract protected function configurationFor($logger);
+
+    /**
+     * @param HandlerInterface $handler
+     * @param array $config
+     * @return HandlerInterface
+     */
+    abstract protected function prepareHandler(HandlerInterface $handler, array $config = []);
 }
