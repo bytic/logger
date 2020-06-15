@@ -18,7 +18,7 @@ class CreateDriversTest extends AbstractTest
     {
         $manager = $this->generateBaseManager();
 
-        $config = require TEST_FIXTURE_PATH.'/config/stack.php';
+        $config = require TEST_FIXTURE_PATH . '/config/stack.php';
         $manager::setConfig(['logging' => $config]);
 
         $logger = $manager->driver('stack');
@@ -35,7 +35,7 @@ class CreateDriversTest extends AbstractTest
     {
         $manager = $this->generateBaseManager();
 
-        $config = require TEST_FIXTURE_PATH.'/config/stack.php';
+        $config = require TEST_FIXTURE_PATH . '/config/stack.php';
         $manager::setConfig(['logging' => $config]);
 
         $logger = $manager->driver('daily');
@@ -52,7 +52,7 @@ class CreateDriversTest extends AbstractTest
     {
         $manager = $this->generateBaseManager();
 
-        $config = require TEST_FIXTURE_PATH.'/config/stack.php';
+        $config = require TEST_FIXTURE_PATH . '/config/stack.php';
         $manager::setConfig(['logging' => $config]);
 
         $logger = $manager->driver('newrelic');

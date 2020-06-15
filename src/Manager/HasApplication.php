@@ -46,6 +46,6 @@ trait HasApplication
      */
     protected function getLogsFolderPath()
     {
-        return $this->getContainer()->get('path.storage').'/logs';
+        return $this->getContainer()->get('path.storage') . '/logs';
     }
 }

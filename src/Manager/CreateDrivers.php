@@ -56,7 +56,7 @@ trait CreateDrivers
             return $this->callCustomCreator($config);
         }
 
-        $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
+        $driverMethod = 'create' . ucfirst($config['driver']) . 'Driver';
 
         if (method_exists($this, $driverMethod)) {
             return $this->{$driverMethod}($config);
@@ -110,7 +110,7 @@ trait CreateDrivers
         $handlers = [
             $this->prepareHandler(
                 new StreamHandler(
-                    $config['path'] ?? $this->getLogsFolderPath().'/bytic.log',
+                    $config['path'] ?? $this->getLogsFolderPath() . '/bytic.log',
                     $this->level($config),
                     $config['bubble'] ?? true,
                     $config['permission'] ?? null,
@@ -133,8 +133,12 @@ trait CreateDrivers
 
         $handlers = [
             $this->prepareHandler(new RotatingFileHandler(
-                $config['path'], $config['days'] ?? 7, $this->level($config),
-                $config['bubble'] ?? true, $config['permission'] ?? null, $config['locking'] ?? false
+                $config['path'],
+                $config['days'] ?? 7,
+                $this->level($config),
+                $config['bubble'] ?? true,
+                $config['permission'] ?? null,
+                $config['locking'] ?? false
             ), $config),
         ];
 
@@ -151,7 +155,7 @@ trait CreateDrivers
         $config = $this->configurationFor('emergency');
 
         $handler = new StreamHandler(
-            $config['path'] ?? $this->getLogsFolderPath().'/bytic.log',
+            $config['path'] ?? $this->getLogsFolderPath() . '/bytic.log',
             $this->level(['level' => 'debug'])
         );
 
