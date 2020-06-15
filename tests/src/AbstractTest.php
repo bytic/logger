@@ -24,7 +24,7 @@ abstract class AbstractTest extends TestCase
     {
         $manager = new Manager();
         $manager->initContainer();
-        $manager->getContainer()->set('path.storage', TEST_FIXTURE_PATH.'/storage');
+        $manager->getContainer()->set('path.storage', TEST_FIXTURE_PATH . '/storage');
 
         return $manager;
     }

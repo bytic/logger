@@ -29,7 +29,7 @@ trait MonologWrappers
 
         if (!is_a($config['handler'], HandlerInterface::class, true)) {
             throw new InvalidArgumentException(
-                $config['handler'].' must be an instance of '.HandlerInterface::class
+                $config['handler'] . ' must be an instance of ' . HandlerInterface::class
             );
         }
 
