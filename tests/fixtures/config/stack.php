@@ -27,8 +27,8 @@ return [
         ],
 
         'newrelic' => [
-            'driver' => 'monolog',
-            'handler' => \Nip\Logger\Monolog\Handler\NewRelicHandler::class
+            'driver' => 'newrelic',
+//            'handler' => \Nip\Logger\Monolog\Handler\NewRelicHandler::class
         ],
 
         'stdout' => [

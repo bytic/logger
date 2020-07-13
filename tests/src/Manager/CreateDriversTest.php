@@ -61,6 +61,6 @@ class CreateDriversTest extends AbstractTest
         $handlers = $logger->getLogger()->getHandlers();
 
         static::assertCount(1, $handlers);
-        static::assertInstanceOf(NewRelicHandler::class, $handlers[0]);
+        static::assertInstanceOf(\ByTIC\NewRelic\Monolog\Handler::class, $handlers[0]);
     }
 }

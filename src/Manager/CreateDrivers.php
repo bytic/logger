@@ -146,6 +146,18 @@ trait CreateDrivers
     }
 
     /**
+     * @param array $config
+     * @return Monolog
+     */
+    protected function createNewrelicDriver($config)
+    {
+        $config = $config instanceof Config ? $config->toArray() : $config;
+        $config['handler'] = isset($config['handler']) ? $config['handler'] : \ByTIC\NewRelic\Monolog\Handler::class;
+
+        return $this->createMonologDriver($config);
+    }
+
+    /**
      * Create an emergency log handler to avoid white screens of death.
      *
      * @return LoggerInterface
