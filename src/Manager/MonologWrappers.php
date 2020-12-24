@@ -2,16 +2,20 @@
 
 namespace Nip\Logger\Manager;
 
+use League\Container\Exception\NotFoundException;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FormattableHandlerInterface;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger as Monolog;
 use Nip\Config\Config;
+use Nip\Container\Container;
 use Psr\Log\InvalidArgumentException;
 
 /**
  * Class MonologWrappers
  * @package Nip\Logger\Manager
+ *
+ * @method Container getContainer()
  */
 trait MonologWrappers
 {
@@ -29,7 +33,7 @@ trait MonologWrappers
 
         if (!is_a($config['handler'], HandlerInterface::class, true)) {
             throw new InvalidArgumentException(
-                $config['handler'] . ' must be an instance of ' . HandlerInterface::class
+                $config['handler'].' must be an instance of '.HandlerInterface::class
             );
         }
 
@@ -39,12 +43,12 @@ trait MonologWrappers
             $config['handler_with'] ?? []
         );
 
-        return new Monolog($this->parseChannel($config), [
-            $this->prepareHandler(
-                $this->getContainer()->get($config['handler'], $with),
-                $config
-            ),
-        ]);
+        $handler = $this->getContainer()->make($config['handler'], $with);
+
+        return new Monolog(
+            $this->parseChannel($config),
+            [$this->prepareHandler($handler, $config)]
+        );
     }
 
     /**

@@ -28,7 +28,7 @@ return [
 
         'newrelic' => [
             'driver' => 'newrelic',
-            'handler' => \ByTIC\NewRelic\Monolog\Handler::class
+//            'handler' => \ByTIC\NewRelic\Monolog\Handler::class
         ],
 
         'stdout' => [

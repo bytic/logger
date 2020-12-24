@@ -5,7 +5,6 @@ namespace Nip\Logger\Tests\Manager;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Nip\Logger\Logger;
-use Nip\Logger\Monolog\Handler\NewRelicHandler;
 use Nip\Logger\Tests\AbstractTest;
 
 /**
@@ -14,6 +13,25 @@ use Nip\Logger\Tests\AbstractTest;
  */
 class CreateDriversTest extends AbstractTest
 {
+    public function test_createDriver_with_param()
+    {
+        $manager = $this->generateBaseManager();
+
+        $config = require TEST_FIXTURE_PATH . '/config/stack.php';
+        $manager::setConfig(['logging' => $config]);
+
+        $logger = $manager->driver('stderr');
+        self::assertInstanceOf(Logger::class, $logger);
+
+        $handlers = $logger->getLogger()->getHandlers();
+        static::assertCount(1, $handlers);
+        $handler = $handlers[0];
+
+        static::assertInstanceOf(StreamHandler::class, $handler);
+        self::assertFalse($handler->getBubble());
+
+    }
+
     public function test_createStackDriver()
     {
         $manager = $this->generateBaseManager();
