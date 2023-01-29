@@ -39,7 +39,7 @@ class Logger extends AbstractLogger
      *
      * @throws \Psr\Log\InvalidArgumentException
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, string|\Stringable $message, array $context = []): void
     {
         $formatter = $this->formatter;
 

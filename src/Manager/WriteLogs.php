@@ -15,7 +15,7 @@ trait WriteLogs
     /**
      * @inheritdoc
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, string|\Stringable $message, array $context = []): void
     {
         $this->writeLog($level, $message, $context);
     }
