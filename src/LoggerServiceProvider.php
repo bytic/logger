@@ -2,7 +2,6 @@
 
 namespace Nip\Logger;
 
-use Monolog\Logger as Monolog;
 use Nip\Container\ServiceProviders\Providers\AbstractSignatureServiceProvider;
 use Nip\Container\ServiceProviders\Providers\BootableServiceProviderInterface;
 use Nip\Debug\ErrorHandler;
@@ -35,7 +34,7 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
         $this->getContainer()->share('log', function () {
             return $this->createLogger();
         });
-//        $this->getContainer()->alias('log', PsrLoggerInterface::class);
+        $this->getContainer()->alias('log', PsrLoggerInterface::class);
     }
 
     /**
