@@ -35,7 +35,7 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
         $this->getContainer()->share('log', function () {
             return $this->createLogger();
         });
-        $this->getContainer()->alias('log', PsrLoggerInterface::class);
+//        $this->getContainer()->alias('log', PsrLoggerInterface::class);
     }
 
     /**

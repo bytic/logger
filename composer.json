@@ -23,15 +23,15 @@
   },
   "require": {
     "php": "^7.0|^8.0",
-    "bytic/config": "^0.9|^1.0",
+    "bytic/config": "^0.9|^1.0|^2.0",
     "bytic/container": "^0.9|^1.0|^2.0",
     "bytic/utility": "^1.0",
-    "bytic/debug": "^0.9|^1.0",
+    "bytic/debug": "^0.9|^1.0|^2.0",
     "bytic/newrelic": "^1.0",
-    "monolog/monolog": "^1.2|^2.0|^3.0"
+    "monolog/monolog": "^2.0|^3.0"
   },
   "require-dev": {
-    "bytic/application": "^0.9|^1.0",
+    "bytic/application": "^0.9|^1.0|^2.0",
     "bytic/phpqatools": "^1.0"
   },
 
