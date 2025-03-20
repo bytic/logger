@@ -168,7 +168,10 @@ trait CreateDrivers
 
         $handler = new StreamHandler(
             $config['path'] ?? $this->getLogsFolderPath() . '/bytic.log',
-            $this->level(['level' => 'debug'])
+            $this->level(['level' => 'debug']),
+            $config['bubble'] ?? true,
+            $config['permission'] ?? null,
+            $config['locking'] ?? false
         );
 
         return $this->createLogger(
