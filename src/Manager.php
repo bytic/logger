@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Logger;
 
 use Nip\Config\Utils\PackageHasConfigTrait;
@@ -7,10 +9,10 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
- * Class Manager
+ * Central logging manager.
  *
- * @package Nip\Logger
- *
+ * Resolves named log channels from configuration and delegates all PSR-3 log
+ * calls to the default channel's underlying Monolog instance.
  */
 class Manager extends AbstractLogger implements PsrLoggerInterface
 {
@@ -27,16 +29,12 @@ class Manager extends AbstractLogger implements PsrLoggerInterface
 
     /**
      * The standard date format to use when writing logs.
-     *
-     * @var string
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected string $dateFormat = 'Y-m-d H:i:s';
 
-    /**
-     * @return string
-     */
-    protected static function getPackageConfigName()
+    protected static function getPackageConfigName(): string
     {
         return 'logging';
     }
 }
+
