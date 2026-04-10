@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class LoggerTest extends TestCase
 {
-    private function makeLogger(): array
+    private function createLoggerWithHandler(): array
     {
         $handler = new TestHandler();
         $monolog = new Monolog('test', [$handler]);
@@ -26,7 +26,7 @@ class LoggerTest extends TestCase
 
     public function test_log_passes_raw_message_without_timestamp_prefix(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         $logger->warning('Something went wrong');
 
@@ -45,7 +45,7 @@ class LoggerTest extends TestCase
 
     public function test_log_interpolates_context_placeholders(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         $logger->info('Hello {user}', ['user' => 'Alice']);
 
@@ -54,7 +54,7 @@ class LoggerTest extends TestCase
 
     public function test_log_leaves_message_unchanged_when_no_placeholders(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         $logger->error('No placeholders here');
 
@@ -63,7 +63,7 @@ class LoggerTest extends TestCase
 
     public function test_log_interpolates_datetime_context(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         $dt = new \DateTimeImmutable('2024-01-15T10:00:00+00:00');
         $logger->debug('Event at {time}', ['time' => $dt]);
@@ -73,7 +73,7 @@ class LoggerTest extends TestCase
 
     public function test_log_interpolates_object_with_to_string(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         $obj = new class {
             public function __toString(): string
@@ -88,7 +88,7 @@ class LoggerTest extends TestCase
 
     public function test_log_interpolates_plain_object_with_class_name(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         $logger->notice('Object: {obj}', ['obj' => new \stdClass()]);
 
@@ -106,7 +106,7 @@ class LoggerTest extends TestCase
 
     public function test_log_uses_correct_monolog_level(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         $logger->warning('test warning');
 
@@ -117,7 +117,7 @@ class LoggerTest extends TestCase
 
     public function test_call_proxies_to_inner_logger(): void
     {
-        [$logger, $handler] = $this->makeLogger();
+        [$logger, $handler] = $this->createLoggerWithHandler();
 
         // Call debug() which is defined on PSR AbstractLogger but ultimately
         // proxies through to Monolog

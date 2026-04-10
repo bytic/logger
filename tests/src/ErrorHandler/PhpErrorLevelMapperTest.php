@@ -21,9 +21,6 @@ class PhpErrorLevelMapperTest extends TestCase
         self::assertNotEmpty($map);
     }
 
-    /**
-     * @param array{int, string} $args
-     */
     #[\PHPUnit\Framework\Attributes\DataProvider('provideErrorLevelMappings')]
     public function test_toLogLevel_maps_correctly(int $errorType, string $expectedLevel): void
     {

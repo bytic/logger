@@ -14,9 +14,6 @@ use Psr\Log\LogLevel;
  */
 class LevelTest extends TestCase
 {
-    /**
-     * @param array{string, Level} $args
-     */
     #[\PHPUnit\Framework\Attributes\DataProvider('providePsrLevels')]
     public function test_fromPsrLevel_round_trips(string $psrLevel, Level $expected): void
     {
