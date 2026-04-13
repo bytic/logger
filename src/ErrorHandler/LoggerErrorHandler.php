@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nip\Logger\ErrorHandler;
 
+use Symfony\Component\ErrorHandler\ErrorHandler as SymfonyErrorHandler;
 use Nip\Debug\ErrorHandler;
 use Psr\Log\LoggerInterface;
 
@@ -25,7 +26,7 @@ final class LoggerErrorHandler
      * using the accurate PSR-3 level from {@see PhpErrorLevelMapper} rather
      * than Symfony's default (which maps warnings and notices to ERROR).
      */
-    public static function register(ErrorHandler $errorHandler, LoggerInterface $logger): void
+    public static function register(SymfonyErrorHandler $errorHandler, LoggerInterface $logger): void
     {
         $errorHandler->setDefaultLogger($logger, PhpErrorLevelMapper::getLevelMap(), true);
     }
