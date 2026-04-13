@@ -1,35 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Logger;
 
 use Nip\Container\ServiceProviders\Providers\AbstractSignatureServiceProvider;
 use Nip\Container\ServiceProviders\Providers\BootableServiceProviderInterface;
 use Nip\Debug\ErrorHandler;
+use Nip\Logger\ErrorHandler\LoggerErrorHandler;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
- * Class LoggerServiceProvider
- * @package Nip\Logger
+ * Registers the logger into the bytic container.
  */
 class LoggerServiceProvider extends AbstractSignatureServiceProvider implements BootableServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function provides()
+    #[\Override]
+    public function provides(): array
     {
         return ['log', PsrLoggerInterface::class];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function register()
+    #[\Override]
+    public function register(): void
     {
         $this->registerLog();
     }
 
-    protected function registerLog()
+    protected function registerLog(): void
     {
         $this->getContainer()->share('log', function () {
             return $this->createLogger();
@@ -38,20 +36,28 @@ class LoggerServiceProvider extends AbstractSignatureServiceProvider implements 
     }
 
     /**
-     * Create the logger.
-     *
-     * @return Manager
+     * Create the logger manager.
      */
-    protected function createLogger()
+    protected function createLogger(): Manager
     {
-        $manager =  $this->getContainer()->get(Manager::class);
+        $manager = $this->getContainer()->get(Manager::class);
         $manager->setContainer($this->getContainer());
+
         return $manager;
     }
 
-    public function boot()
+    /**
+     * Boot: attach the PSR-3 logger to the error handler with proper per-level
+     * PSR-3 severity so that E_WARNING is logged as WARNING, E_NOTICE as
+     * NOTICE, and E_DEPRECATED as INFO – rather than everything at ERROR.
+     */
+    #[\Override]
+    public function boot(): void
     {
-        $this->getContainer()->get(ErrorHandler::class)
-            ->setDefaultLogger($this->getContainer()->get(PsrLoggerInterface::class));
+        LoggerErrorHandler::register(
+            $this->getContainer()->get(ErrorHandler::class),
+            $this->getContainer()->get(PsrLoggerInterface::class)
+        );
     }
 }
+

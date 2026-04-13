@@ -1,42 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Logger\Manager;
 
 use Nip\Logger\Logger;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class WriteLogs
+ * Trait WriteLogs
+ *
  * @package Nip\Logger\Traits
  */
 trait WriteLogs
 {
-
-    /**
-     * @inheritdoc
-     */
-    public function log($level, string|\Stringable $message, array $context = []): void
+    #[\Override]
+    public function log(mixed $level, string|\Stringable $message, array $context = []): void
     {
-        $this->writeLog($level, $message, $context);
+        $this->writeLog((string) $level, $message, $context);
     }
 
     /**
-     * Write a message to Monolog.
-     *
-     * @param string $level
-     * @param string $message
-     * @param array  $context
-     *
-     * @return bool
+     * Write a message to the underlying Monolog instance.
      */
-    protected function writeLog($level, $message, $context)
+    protected function writeLog(string $level, string|\Stringable $message, array $context): void
     {
-        return $this->driver()->{$level}($message, $context);
+        $this->driver()->{$level}($message, $context);
     }
 
-    /**
-     * @param string|null $driver
-     * @return Logger|LoggerInterface
-     */
-    abstract public function driver($driver = null);
+    abstract public function driver(?string $driver = null): Logger|LoggerInterface;
 }
+

@@ -22,18 +22,21 @@
     }
   },
   "require": {
-    "php": "^7.0|^8.0",
+    "php": "^8.3",
     "bytic/config": "^0.9|^1.0|^2.0",
     "bytic/container": "^0.9|^1.0|^2.0",
     "bytic/utility": "^1.0",
     "bytic/debug": "^0.9|^1.0|^2.0",
     "bytic/newrelic": "^1.0",
-    "monolog/monolog": "^2.0|^3.0"
+    "monolog/monolog": "^3.0",
+    "symfony/deprecation-contracts": "^3.0"
   },
   "require-dev": {
     "bytic/application": "^0.9|^1.0|^2.0",
-    "bytic/phpqatools": "^1.0"
+    "bytic/phpqatools": "^1.0",
+    "phpunit/phpunit": "^12.0"
   },
+  "suggest": {},
 
   "minimum-stability": "dev",
   "prefer-stable": true,

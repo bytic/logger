@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Logger\Manager;
 
 use Nip\Logger\Logger;
@@ -7,50 +9,39 @@ use Throwable;
 
 /**
  * Trait HasDrivers
+ *
  * @package Nip\Logger\Traits
  */
 trait HasDrivers
 {
-
     /**
      * Get a log driver instance.
-     *
-     * @param string|null $driver
-     * @return Logger|\Psr\Log\LoggerInterface
      */
-    public function driver($driver = null)
+    public function driver(?string $driver = null): Logger|\Psr\Log\LoggerInterface
     {
         return $this->get($driver ?? $this->getDefaultDriver());
     }
 
     /**
      * Get the default log driver name.
-     *
-     * @return string
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
-        return static::getPackageConfig("default", 'single');
+        return static::getPackageConfig('default', 'single');
     }
 
     /**
      * Attempt to get the log from the local cache.
-     *
-     * @param string $name
-     * @return \Psr\Log\LoggerInterface
      */
-    protected function get($name)
+    protected function get(string $name): \Psr\Log\LoggerInterface
     {
         try {
             return $this->channels[$name] ?? $this->initDriver($name);
-        } catch (Throwable $exception) {
+        } catch (Throwable) {
             return $this->createEmergencyLogger();
         }
     }
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    abstract protected function initDriver($name);
+    abstract protected function initDriver(string $name): mixed;
 }
+

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Logger\Manager;
 
 use Monolog\Handler\HandlerInterface;
@@ -13,23 +15,19 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Trait CreateDrivers
+ *
  * @package Nip\Logger\Traits
  */
 trait CreateDrivers
 {
-
     /**
      * The registered custom driver creators.
      *
-     * @var array
+     * @var array<string, callable>
      */
-    protected $customCreators = [];
+    protected array $customCreators = [];
 
-    /**
-     * @param $name
-     * @return mixed
-     */
-    protected function initDriver($name)
+    protected function initDriver(string $name): mixed
     {
         $this->channels[$name] = $this->createLogger($this->resolve($name));
 
@@ -39,12 +37,9 @@ trait CreateDrivers
     /**
      * Resolve the given log instance by name.
      *
-     * @param string $name
-     * @return LoggerInterface
-     *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name)
+    protected function resolve(string $name): LoggerInterface
     {
         $config = $this->configurationFor($name);
 
@@ -68,32 +63,26 @@ trait CreateDrivers
     /**
      * Call a custom driver creator.
      *
-     * @param array $config
-     * @return mixed
+     * @param array<string, mixed> $config
      */
-    protected function callCustomCreator(array $config)
+    protected function callCustomCreator(array $config): mixed
     {
-        return $this->customCreators[$config['driver']](app(), $config);
+        return ($this->customCreators[$config['driver']])($config);
     }
 
     /**
      * Create an aggregate log driver instance.
      *
-     * @param array $config
-     * @return LoggerInterface
+     * @param array<string, mixed>|Config $config
      */
-    protected function createStackDriver($config)
+    protected function createStackDriver(array|Config $config): LoggerInterface
     {
         $config = $config instanceof Config ? $config->toArray() : $config;
 
         $handlers = [];
-        array_map(function ($channel) use (&$handlers) {
+        array_map(function (string $channel) use (&$handlers): void {
             $handlers = array_merge($handlers, $this->channel($channel)->getHandlers());
         }, $config['channels']);
-
-//        if ($config['ignore_exceptions'] ?? false) {
-//            $handlers = [new WhatFailureGroupHandler($handlers)];
-//        }
 
         return new Monolog($this->parseChannel($config), $handlers);
     }
@@ -101,10 +90,9 @@ trait CreateDrivers
     /**
      * Create an instance of the single file log driver.
      *
-     * @param array $config
-     * @return LoggerInterface
+     * @param array<string, mixed>|Config $config
      */
-    protected function createSingleDriver($config)
+    protected function createSingleDriver(array|Config $config): LoggerInterface
     {
         $config = $config instanceof Config ? $config->toArray() : $config;
         $handlers = [
@@ -124,10 +112,9 @@ trait CreateDrivers
     }
 
     /**
-     * @param array $config
-     * @return Monolog
+     * @param array<string, mixed>|Config $config
      */
-    protected function createDailyDriver($config)
+    protected function createDailyDriver(array|Config $config): Monolog
     {
         $config = $config instanceof Config ? $config->toArray() : $config;
 
@@ -146,23 +133,20 @@ trait CreateDrivers
     }
 
     /**
-     * @param array $config
-     * @return Monolog
+     * @param array<string, mixed>|Config $config
      */
-    protected function createNewrelicDriver($config)
+    protected function createNewrelicDriver(array|Config $config): Monolog
     {
         $config = $config instanceof Config ? $config->toArray() : $config;
-        $config['handler'] = isset($config['handler']) ? $config['handler'] : \ByTIC\NewRelic\Monolog\Handler::class;
+        $config['handler'] = $config['handler'] ?? \ByTIC\NewRelic\Monolog\Handler::class;
 
         return $this->createMonologDriver($config);
     }
 
     /**
      * Create an emergency log handler to avoid white screens of death.
-     *
-     * @return LoggerInterface
      */
-    protected function createEmergencyLogger()
+    protected function createEmergencyLogger(): LoggerInterface
     {
         $config = $this->configurationFor('emergency');
 
@@ -179,22 +163,10 @@ trait CreateDrivers
         );
     }
 
-    /**
-     * @param $logger
-     * @return Logger|LoggerInterface
-     */
-    abstract protected function createLogger($logger);
+    abstract protected function createLogger(mixed $logger): Logger|LoggerInterface;
 
-    /**
-     * @param string $logger
-     * @return array
-     */
-    abstract protected function configurationFor($logger);
+    abstract protected function configurationFor(string $logger): mixed;
 
-    /**
-     * @param HandlerInterface $handler
-     * @param array $config
-     * @return HandlerInterface
-     */
-    abstract protected function prepareHandler(HandlerInterface $handler, array $config = []);
+    abstract protected function prepareHandler(HandlerInterface $handler, array $config = []): HandlerInterface;
 }
+

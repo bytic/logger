@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nip\Logger;
 
 /**
- * Class Exception
- * @package Nip\Logger
+ * Base exception class for the bytic/logger package.
  */
 class Exception extends \Exception
 {
-    public function log()
+    public function log(): void
     {
     }
 }
+
