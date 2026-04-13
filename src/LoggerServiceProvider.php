@@ -12,10 +12,6 @@ use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
  * Registers the logger into the bytic container.
- *
- * @deprecated In Symfony-based applications use {@see \Nip\Logger\ByticLoggerBundle} instead.
- *   This service provider will continue to work in legacy (bytic/container) applications
- *   but may be removed in a future major version.
  */
 class LoggerServiceProvider extends AbstractSignatureServiceProvider implements BootableServiceProviderInterface
 {

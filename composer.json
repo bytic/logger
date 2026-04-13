@@ -36,9 +36,7 @@
     "bytic/phpqatools": "^1.0",
     "phpunit/phpunit": "^12.0"
   },
-  "suggest": {
-    "symfony/http-kernel": "Required to use the ByticLoggerBundle Symfony integration (^6.0|^7.0)"
-  },
+  "suggest": {},
 
   "minimum-stability": "dev",
   "prefer-stable": true,

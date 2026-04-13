@@ -8,9 +8,6 @@ All notable changes to this project will be documented in this file, in reverse 
 - **`Nip\Logger\Level` enum** – replaces the plain `$levels` array in `HasLevelsTrait`.  Use `Level::fromPsrLevel('warning')` or `Level::Warning->toMonologLevel()` in new code.
 - **`Nip\Logger\ErrorHandler\PhpErrorLevelMapper`** – maps PHP `E_*` constants to accurate PSR-3 log levels (warnings → `warning`, notices → `notice`, deprecations → `info`).  Previously all PHP errors were logged at `ERROR` level.
 - **`Nip\Logger\ErrorHandler\LoggerErrorHandler`** – wires a PSR-3 logger into `Nip\Debug\ErrorHandler` with per-level severity via `PhpErrorLevelMapper`.
-- **`Nip\Logger\ByticLoggerBundle`** – optional Symfony HttpKernel Bundle; requires `symfony/http-kernel ^6.0|^7.0`.
-- **`Nip\Logger\DependencyInjection\ByticLoggerExtension`** – Symfony DI extension used by the Bundle.
-- **`config/services.php`** – Symfony service definitions for the Bundle.
 - `declare(strict_types=1)` added to all source files.
 - Full return type declarations and typed properties throughout `src/`.
 - `#[\Override]` attribute on all interface/abstract method implementations.
@@ -26,10 +23,8 @@ All notable changes to this project will be documented in this file, in reverse 
 - **`LoggerServiceProvider::boot()`** – now calls `LoggerErrorHandler::register()` instead of `setDefaultLogger()` without level mapping.
 - Monolog constraint narrowed from `^2.0|^3.0` to `^3.0`.
 - Added `symfony/deprecation-contracts ^3.0` to `require`.
-- Added `suggest` entry for `symfony/http-kernel`.
 
 ### Deprecated
-- `Nip\Logger\LoggerServiceProvider` – prefer `ByticLoggerBundle` in Symfony applications.
 - `Nip\Logger\Manager\HasApplication::getApplication()` and `setApplication()` – these methods are unused; inject services via the container.
 - `Nip\Logger\Manager\HasLevelsTrait::$errorLevelMap` static property – use `PhpErrorLevelMapper::getLevelMap()` instead.
 - `Nip_PHPException::log()` – use a PSR-3 logger instead.

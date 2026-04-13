@@ -24,8 +24,6 @@ composer require bytic/logger
 
 ## Usage
 
-### Legacy apps (bytic/container)
-
 Register the `LoggerServiceProvider` in your application bootstrap:
 
 ```php
@@ -33,26 +31,6 @@ $container->addServiceProvider(new \Nip\Logger\LoggerServiceProvider());
 ```
 
 The provider registers `log` and `Psr\Log\LoggerInterface` into the container.
-
-> **Deprecation notice:** `LoggerServiceProvider` will be removed in a future major version.
-> New applications should use the [Symfony Bundle](#symfony-bundle) integration.
-
-### Symfony Bundle
-
-1. Install `symfony/http-kernel` if it is not already a dependency of your application:
-   ```bash
-   composer require symfony/http-kernel
-   ```
-
-2. Register the bundle in `config/bundles.php`:
-   ```php
-   return [
-       // ...
-       \Nip\Logger\ByticLoggerBundle::class => ['all' => true],
-   ];
-   ```
-
-The bundle registers `Nip\Logger\Manager` and `Psr\Log\LoggerInterface` as Symfony services.
 
 ---
 
@@ -86,14 +64,14 @@ logged at ERROR level.
 
 ---
 
-## Migration Guide (Legacy → Symfony)
+## Migration Notes
 
-1. Replace `LoggerServiceProvider` registration with `ByticLoggerBundle`.
-2. Inject `Psr\Log\LoggerInterface` via constructor injection instead of
-   `$container->get('log')`.
-3. Remove any code that reads `$logger->getFormatter()` – the `formatter`
-   property and the `getFormatter()` method have been removed.  Message
-   formatting is now handled exclusively by Monolog's `LineFormatter`.
+When upgrading from 1.x:
+
+- `Logger::getFormatter()` and `Logger::format()` have been removed.  Message
+  formatting is now handled exclusively by Monolog's `LineFormatter`.
+- Inject `Psr\Log\LoggerInterface` via constructor injection instead of
+  `$container->get('log')` where possible.
 
 ---
 
