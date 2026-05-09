@@ -72,10 +72,9 @@ return [
             ],
         ],
 
+        // Requires the bytic/newrelic package and the New Relic PHP extension.
         'newrelic' => [
-            'driver' => 'monolog',
-            'handler' => \Nip\Logger\Monolog\Handler\NewRelicHandler::class,
-            'formatter' => 'default',
+            'driver' => 'newrelic',
         ],
 
         'stderr' => [
