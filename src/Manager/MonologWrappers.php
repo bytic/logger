@@ -48,7 +48,8 @@ trait MonologWrappers
 
         return new Monolog(
             $this->parseChannel($config),
-            [$this->prepareHandler($handler, $config)]
+            [$this->prepareHandler($handler, $config)],
+            $this->processors()
         );
     }
 

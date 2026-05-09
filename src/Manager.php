@@ -23,6 +23,7 @@ class Manager extends AbstractLogger implements PsrLoggerInterface
     use Manager\HasDrivers;
     use Manager\HasLevelsTrait;
     use Manager\HasLoggers;
+    use Manager\HasProcessors;
     use Manager\MonologWrappers;
     use Manager\WriteLogs;
     use PackageHasConfigTrait;

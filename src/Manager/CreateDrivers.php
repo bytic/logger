@@ -84,7 +84,7 @@ trait CreateDrivers
             $handlers = array_merge($handlers, $this->channel($channel)->getHandlers());
         }, $config['channels']);
 
-        return new Monolog($this->parseChannel($config), $handlers);
+        return new Monolog($this->parseChannel($config), $handlers, $this->processors());
     }
 
     /**
@@ -108,7 +108,7 @@ trait CreateDrivers
             ),
         ];
 
-        return new Monolog($this->parseChannel($config), $handlers);
+        return new Monolog($this->parseChannel($config), $handlers, $this->processors());
     }
 
     /**
@@ -129,7 +129,7 @@ trait CreateDrivers
             ), $config),
         ];
 
-        return new Monolog($this->parseChannel($config), $handlers);
+        return new Monolog($this->parseChannel($config), $handlers, $this->processors());
     }
 
     /**
@@ -159,7 +159,7 @@ trait CreateDrivers
         );
 
         return $this->createLogger(
-            new Monolog('bytic', [$this->prepareHandler($handler)])
+            new Monolog('bytic', [$this->prepareHandler($handler)], $this->processors())
         );
     }
 
