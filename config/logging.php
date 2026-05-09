@@ -72,6 +72,7 @@ return [
             ],
         ],
 
+        // Requires the bytic/newrelic package and the New Relic PHP extension.
         'newrelic' => [
             'driver' => 'newrelic',
         ],
