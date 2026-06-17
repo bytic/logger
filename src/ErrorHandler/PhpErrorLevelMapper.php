@@ -27,7 +27,7 @@ final class PhpErrorLevelMapper
      */
     public static function getLevelMap(): array
     {
-        return [
+        $levelMap = [
             \E_NOTICE           => LogLevel::NOTICE,
             \E_USER_NOTICE      => LogLevel::NOTICE,
             \E_WARNING          => LogLevel::WARNING,
@@ -40,10 +40,13 @@ final class PhpErrorLevelMapper
             \E_PARSE            => LogLevel::CRITICAL,
             \E_COMPILE_ERROR    => LogLevel::CRITICAL,
             \E_COMPILE_WARNING  => LogLevel::WARNING,
-            \E_STRICT           => LogLevel::DEBUG,
             \E_DEPRECATED       => LogLevel::INFO,
             \E_USER_DEPRECATED  => LogLevel::INFO,
         ];
+        if (\PHP_VERSION_ID < 80400) {
+            $levelMap[\E_STRICT] = LogLevel::DEBUG;
+        }
+        return $levelMap;
     }
 
     /**
